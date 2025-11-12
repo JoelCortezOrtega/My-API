@@ -28,7 +28,7 @@ const Login = () => {
         text: "Inicio de sesión exitoso. Redirigiendo...",
       });
       setTimeout(() => {
-        window.location.href = "/verificacion"; // puedes usar navigate() si usas react-router
+        window.location.href = "/components/verificacion.jsx"; // puedes usar navigate() si usas react-router
       }, 1500);
     } else if (rfc !== "caast" && pwd !== "123") {
       setAlertMsg({
