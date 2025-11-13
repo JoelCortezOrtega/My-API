@@ -1,23 +1,23 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Mover aquí
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "../css/login.css";
 
 const Login = () => {
-  const [rfc, setRfc] = useState("");
+  const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
   const [alertMsg, setAlertMsg] = useState(null);
   const [showPwd, setShowPwd] = useState(false);
 
-  const navigate = useNavigate(); // ✅ Se declara aquí, no dentro del setTimeout
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     setAlertMsg(null);
 
-    if (!rfc || !pwd) {
+    if (!email || !pwd) {
       setAlertMsg({
         type: "danger",
         text: "Por favor, complete todos los campos.",
@@ -25,88 +25,86 @@ const Login = () => {
       return;
     }
 
-    if (rfc === "caast" && pwd === "123") {
+    if (email === "test@example.com" && pwd === "123456") {
       setAlertMsg({
         type: "success",
         text: "Inicio de sesión exitoso. Redirigiendo...",
       });
 
       setTimeout(() => {
-        navigate("/verificacion"); // ✅ Redirección correcta
+        navigate("/verificacion");
       }, 1500);
-    } else if (rfc !== "caast" && pwd !== "123") {
+    } else {
       setAlertMsg({
         type: "danger",
-        text: "RFC o contraseña incorrectos.",
-      });
-    } else if (rfc !== "caast") {
-      setAlertMsg({
-        type: "danger",
-        text: "El RFC es incorrecto.",
-      });
-    } else if (pwd !== "123") {
-      setAlertMsg({
-        type: "danger",
-        text: "La contraseña es incorrecta.",
+        text: "Correo electrónico o contraseña incorrectos.",
       });
     }
   };
 
   return (
-    <div className="login-container row g-0">
-      {/* Lado izquierdo */}
-      <div className="col-md-6 brand-side">
-        <img src="img/LOGONegro.png" alt="SEER Tráfico S.C." />
-        <h1 className="brand-title">CAAST</h1>
-        <p className="brand-subtitle">Portal de Carga de Información</p>
+    <div className="login-page">
+      <div className="login-header" style={{ textAlign: "center", marginBottom: 14 }}>
+        <img src="img/LOGONegro.png" alt="CAAST" className="logo" />
+        <h1 className="welcome-title">Bienvenido de vuelta</h1>
+        <p className="welcome-subtitle">Accede a tu centro de cumplimiento fiscal</p>
       </div>
 
-      {/* Lado derecho */}
-      <div className="col-md-6 form-side">
-        <h2>Inicio de sesión</h2>
-        <p>
-          Acceso de proveedor IMMEX al portal <strong>/CDE</strong>
-        </p>
+      <div className="login-card login-card--register">
+        {/* Tabs de Iniciar Sesión / Registrarse */}
+        <div className="login-tabs">
+          <button className="tab-btn active" type="button">
+            Iniciar Sesión
+          </button>
+          <button 
+            className="tab-btn"
+            type="button"
+            onClick={() => navigate("/registro")}
+          >
+            Registrarse
+          </button>
+        </div>
 
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="rfc" className="form-label">
-            RFC
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="rfc"
-            placeholder="RFC"
-            autoComplete="username"
-            value={rfc}
-            onChange={(e) => setRfc(e.target.value)}
-          />
-
-          <label htmlFor="pwd" className="form-label mt-3">
-            Contraseña
-          </label>
-          <div className="pwd-wrapper mb-2">
+        {/* Formulario */}
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label htmlFor="email" className="form-label">
+              Correo electrónico
+            </label>
             <input
-              type={showPwd ? "text" : "password"}
+              type="email"
               className="form-control"
-              id="pwd"
-              placeholder="••••••••"
-              autoComplete="current-password"
-              value={pwd}
-              onChange={(e) => setPwd(e.target.value)}
+              id="email"
+              placeholder="tu@email.com"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
-            <button
-              type="button"
-              id="togglePwd"
-              onClick={() => setShowPwd(!showPwd)}
-              className="btn btn-link p-0"
-              tabIndex="-1"
-            >
-              <i
-                id="eyeIcon"
-                className={`bi ${showPwd ? "bi-eye-slash" : "bi-eye"}`}
-              ></i>
-            </button>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="pwd" className="form-label">
+              Contraseña
+            </label>
+            <div className="pwd-wrapper">
+              <input
+                type={showPwd ? "text" : "password"}
+                className="form-control"
+                id="pwd"
+                placeholder="••••••••"
+                autoComplete="current-password"
+                value={pwd}
+                onChange={(e) => setPwd(e.target.value)}
+              />
+              <button
+                type="button"
+                className="toggle-pwd"
+                onClick={() => setShowPwd(!showPwd)}
+                tabIndex="-1"
+              >
+                <i className={`bi ${showPwd ? "bi-eye-slash" : "bi-eye"}`}></i>
+              </button>
+            </div>
           </div>
 
           {alertMsg && (
@@ -115,13 +113,44 @@ const Login = () => {
             </div>
           )}
 
-          <button type="submit" className="btn btn-primary w-100 mt-3">
-            Ingresar
+          <button type="submit" className="btn btn-create w-100">
+            <i className="bi bi-lightning-charge"></i> Iniciar Sesión
+          </button>
+
+          <button
+            type="button"
+            className="forgot-pwd-link"
+            onClick={() => navigate("/recuperar-contrasena")}
+          >
+            ¿Olvidaste tu contraseña?
           </button>
         </form>
 
-        <div className="footer mt-4">
-          Portal SEER Tráfico S.C. — versión demo
+      </div>
+
+      <div className="login-footer mt-3 text-center">
+        <h3 className="features-heading">Características Incluidas</h3>
+        <div className="features-list mt-2">
+          <div className="feature-item">
+            <div className="feature-icon feature-icon--pink">
+              <i className="bi bi-lightning-fill"></i>
+            </div>
+            <div className="feature-label">Procesamiento IA</div>
+          </div>
+
+          <div className="feature-item">
+            <div className="feature-icon feature-icon--orange">
+              <i className="bi bi-shield-check"></i>
+            </div>
+            <div className="feature-label">Cumplimiento Fiscal</div>
+          </div>
+
+          <div className="feature-item">
+            <div className="feature-icon feature-icon--green">
+              <i className="bi bi-check-circle"></i>
+            </div>
+            <div className="feature-label">Verificación Automática</div>
+          </div>
         </div>
       </div>
     </div>

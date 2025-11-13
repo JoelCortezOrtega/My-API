@@ -1,180 +1,264 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-:root {
-      --bg: #f7f9fc;
-      --card: #ffffff;
-      --text: #0b2d50;
-      --muted: #5c6b7b;
-      --line: #e1e7ef;
-      --brand-blue: #0b2d50;
-      --accent: #ffd7a3;
-      --brand-orange: #F16F15;
-      --brand-orange-light: #ffb86c;
-      --radius: 14px;
-      --shadow: 0 8px 30px rgba(7, 29, 54, 0.08);
-    }
-
-    body {
+    * {
       margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    .brandbar {
-      background: linear-gradient(90deg, var(--brand-orange), var(--brand-orange-light));
-      color: #fff;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-    }
-    .brandbar .inner {
-      max-width: 1000px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 10px 16px;
-    }
-    .brandbar img {
-      height: 46px;
-      object-fit: contain;
-    }
-    .brandbar h1 {
-      color: #fff;
-      font-size: 20px;
-      font-weight: 700;
-      margin: 0;
-      letter-spacing: 0.3px;
-    }
+    :root {
+          --bg: #f7f9fc;
+          --card: #ffffff;
+          --text: #0b2d50;
+          --muted: #5c6b7b;
+          --line: #e1e7ef;
+          --brand-blue: #0b2d50;
+          --accent: #ffd7a3;
+          --brand-orange: #F16F15;
+          --brand-orange-light: #ffb86c;
+          --radius: 14px;
+          --shadow: 0 8px 30px rgba(7, 29, 54, 0.08);
+        }
 
-    .wrap {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 0 16px;
-    }
+        body {
+          margin: 0;
+          background: var(--bg);
+          color: var(--text);
+          font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        
+    
 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 24px 28px;
-      margin-bottom: 24px;
-    }
 
-    h2 {
-      color: var(--brand-blue);
-      font-weight: 700;
-      font-size: 1.5rem;
-      margin-bottom: 14px;
-    }
+        .brandbar {
+          background: var(--card); /* top bar white */
+          color: var(--text);
+          /* remove dark borders/shadows for a cleaner look */
+          box-shadow: none;
+          position: relative;
+          border-bottom: none;
+        }
+        
+        .brandbar .inner {
+          max-width: 1000px;
+          margin: 0 auto;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          padding: 10px 16px;
+        }
+        .brandbar img {
+          height: 46px;
+          object-fit: contain;
+          /* tint the elephant logo to orange using CSS filter */
+          filter: invert(52%) sepia(80%) saturate(600%) hue-rotate(-10deg) brightness(95%);
+        }
+        .brandbar h1 {
+          color: var(--text); /* make CAAST title dark/black */
+          font-size: 20px;
+          font-weight: 700;
+          margin: 0;
+          letter-spacing: 0.3px;
+        }
 
-    p {
-      color: var(--muted);
-      margin-bottom: 24px;
-    }
+        .boton {
+          position: absolute;
+          right: 20px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
 
-    .reqs {
-      background: var(--bg);
-      border-left: 5px solid var(--accent);
-      padding: 18px 22px;
-      border-radius: var(--radius);
-      list-style: none;
-      box-shadow: var(--shadow);
-      margin-bottom: 30px;
-    }
+        .btn-Cerrar {
+          background-color: #28a745; /* green */
+          color: #fff;
+          border: 1px solid rgba(0,0,0,0.04);
+          padding: 8px 16px !important;
+          border-radius: 8px;
+          font-weight: 700;
+          font-size: 0.95rem;
+          transition: all 0.18s ease;
+          cursor: pointer;
+          box-shadow: 0 6px 18px rgba(40,167,69,0.12);
+        }
 
-    .reqs li {
-      margin: 6px 0;
-      color: var(--text);
-    }
+        .btn-Cerrar:hover {
+          background-color: #218838;
+          transform: translateY(-1px);
+          box-shadow: 0 10px 24px rgba(33,136,56,0.14);
+        }
 
-    label {
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--text);
-    }
+        .wrap {
+          max-width: 1000px;
+          margin: 40px auto;
+          padding: 0 16px;
+        }
 
-    .btn-primary {
-      background-color: var(--brand-orange);
-      border: none;
-      font-weight: 600;
-      padding: 12px;
-      border-radius: 10px;
-    }
-    .btn-primary:disabled,
-    .btn-primary:active,
-    .btn-primary:focus {
-      background-color: var(--brand-orange-light);
-      border: none;
-    }
-    .btn-outline-success,
-    .btn-outline-danger {
-      border-radius: 10px;
-    }
+        .card {
+          background: var(--card);
+          border: 1px solid var(--line);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow);
+          padding: 24px 28px;
+          margin-bottom: 24px;
+        }
 
-    .btn,
-    .btn-primary,
-    .btn-success,
-    .btn-danger,
-    .btn-outline-success,
-    .btn-outline-danger {
-      padding: 6px 16px !important;   /* Más delgados verticalmente */
-      font-size: 1rem;
-      border-radius: 10px;
-    }
+        h2 {
+          color: var(--brand-blue);
+          font-weight: 700;
+          font-size: 1.5rem;
+          margin-bottom: 14px;
+        }
 
+        p {
+          color: var(--muted);
+          margin-bottom: 24px;
+        }
+
+        .reqs {
+          background: var(--bg);
+          border-left: 5px solid var(--accent);
+          padding: 18px 22px;
+          border-radius: var(--radius);
+          list-style: none;
+          box-shadow: var(--shadow);
+          margin-bottom: 30px;
+        }
+
+        .reqs li {
+          margin: 6px 0;
+          color: var(--text);
+        }
+
+        label {
+          font-weight: 600;
+          margin-bottom: 6px;
+          color: var(--text);
+        }
+
+        .btn-primary {
+          background-color: var(--brand-orange);
+          border: none;
+          font-weight: 800;
+          padding: 12px;
+          border-radius: 70px;
+        }
+        .btn-primary:disabled,
+        .btn-primary:active,
+        .btn-primary:focus {
+          background-color: var(--brand-orange-light);
+          border: none;
+        }
+        .btn-outline-success,
+        .btn-outline-danger {
+          border-radius: 10px;
+        }
+
+        .btn-cerrar {
+          background-color: #6c757d;
+          border: none;
+          font-weight: 600;
+          padding: 12px;
+          border-radius: 10px;
+        }
+
+        .btn-cerrar:hover {
+          background-color: #5a6268;
+        }
+
+
+    /* === Contenedor de acciones con alineación perfecta === */
     .actions {
       display: flex;
-      gap: 24px;
+      gap: 16px;
       justify-content: center;
-      margin-bottom: 18px;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
     }
 
-    table.table {
-      background: var(--card);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-    table thead {
-      background: var(--accent);
-      color: #fff;
-    }
-    table th {
+    /* Base común para todos los botones en .actions */
+    .actions .btn {
+      min-width: 160px;
+      height: 44px;
+      padding: 0 24px !important;
+      font-size: 1rem;
       font-weight: 600;
+      border: none;
+      border-radius: 10px;
       text-align: center;
-    }
-    table td {
       vertical-align: middle;
-      text-align: center;
-    }
-    .muted {
-      color: var(--muted);
-      text-align: center;
-    }
-
-    footer {
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.85rem;
-      padding: 20px;
-      border-top: 1px solid var(--line);
-      margin-top: 40px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
     }
 
-    @media (max-width: 768px) {
-      .brandbar .inner {
-        flex-direction: column;
-        text-align: center;
-      }
-      .reqs {
-        font-size: 0.95rem;
-      }
-      .actions {
-        gap: 12px;
-      }
+    /* Botón Limpiar lista - verde */
+    .actions .btn-success {
+      background-color: #28a745;
+      color: white;
     }
+    .actions .btn-success:hover {
+      background-color: #218838;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Botón Eliminar no válidos - rojo */
+    .actions .btn-danger {
+      background-color: #dc3545;
+      color: white;
+    }
+    .actions .btn-danger:hover {
+      background-color: #b52a37;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Botón Cerrar sesión - gris */
+    .actions .btn-cerrar {
+      background-color: #6c757d;
+      color: white;
+    }
+    .actions .btn-cerrar:hover {
+      background-color: #5a6268;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Botón Seguir / Cargar - naranja institucional */
+    .actions .btn-primary {
+      background-color: var(--brand-orange);
+      color: white;
+      margin-top: 0px;
+    }
+    .actions .btn-primary:hover {
+      background-color: var(--brand-orange-light);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Efecto al presionar */
+    .actions .btn:active {
+      transform: scale(0.98);
+    }
+
+        table.table {
+          background: var(--card);
+          border-radius: var(--radius);
+          overflow: hidden;
+          box-shadow: var(--shadow);
+        }
+        table thead {
+          background: var(--accent);
+          color: #fff;
+        }
+        table th {
+          font-weight: 600;
+          text-align: center;
+        }
+        table td {
+          vertical-align: middle;
+          text-align: center;
+        }
+        .muted {
+          color: var(--muted);
+          text-align: center;
+        }

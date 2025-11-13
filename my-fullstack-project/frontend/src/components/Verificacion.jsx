@@ -1,147 +1,179 @@
-import React, { useState } from "react";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import "../css/pag_verificacion.css";
-import Swal from "sweetalert2";
+import "../css/login.css";
 
 const Verificacion = () => {
-  const [files, setFiles] = useState([]);
-
-  const handleFileChange = (e) => {
-    setFiles(Array.from(e.target.files));
-  };
-
-  const handleClear = () => {
-    setFiles([]);
-    document.getElementById("pdfFiles").value = "";
-  };
-
-  const handleReject = () => {
-    const validFiles = files.filter((f) => f.size < 3 * 1024 * 1024); // menos de 3MB
-    Swal.fire({
-      title: "Archivos no válidos eliminados",
-      text: `Se eliminaron ${files.length - validFiles.length} archivo(s) que excedían el límite.`,
-      icon: "info",
-    });
-    setFiles(validFiles);
-  };
-
-  const handleUpload = () => {
-    Swal.fire({
-      title: "Subiendo archivos...",
-      text: "Esto puede tardar unos segundos.",
-      icon: "info",
-      timer: 2000,
-      showConfirmButton: false,
-    });
-  };
-
   return (
     <div>
-      {/* Barra superior */}
-      <div className="brandbar">
+      {/* Header blanco */}
+      <div className="brandbar" style={{ background: "white", borderBottom: "1px solid #e1e7ef" }}>
         <div className="container-fluid py-2">
           <div className="row align-items-center">
-            <div className="col-auto d-flex align-items-center gap-2" style={{ marginLeft: "15px" }}>
-              <img className="navbar-brand" src="/img/LOGONegro.png" alt="SEER Tráfico S.C." style={{ height: "46px" }} />
-              <h1 className="brand-title mb-0">CAAST</h1>
+            <div
+              className="col-auto d-flex align-items-center gap-2"
+              style={{ marginLeft: "15px" }}
+            >
+              <img
+                className="navbar-brand"
+                src="/img/LOGONegro.png"
+                alt="SEER Tráfico S.C."
+                style={{ height: "46px" }}
+              />
+              <h1 className="brand-title mb-0" style={{ color: "#0b2d50" }}>Centro de Cumplimiento Fiscal</h1>
             </div>
-            <div className="col text-center">
-              <h1 className="mb-0">Portal de Carga de Información</h1>
+            <div className="col text-end" style={{ marginRight: "15px" }}>
+              <button className="btn btn-Cerrar">Cerrar Sesión</button>
             </div>
           </div>
         </div>
       </div>
 
       {/* Contenido principal */}
-      <div className="wrap">
-        <div className="card p-4">
-          <h2>Verificación de Documentos</h2>
-          <p>
-            Antes de cargar los archivos, asegúrate de que cumplan con los
-            requerimientos oficiales de VUCEM para evitar rechazos o errores durante
-            la validación.
-          </p>
-
-          <ul className="reqs">
-            <li><strong>Tipo de archivo:</strong> Solo PDF.</li>
-            <li><strong>Formato:</strong> Escala de grises a 8 bits.</li>
-            <li><strong>Resolución:</strong> 300 DPI.</li>
-            <li><strong>Tamaño máximo:</strong> 3 MB por archivo.</li>
-            <li><strong>Contenido:</strong> Sin formularios ni contraseñas.</li>
-          </ul>
-
-          {/* Subida de archivos */}
-          <form id="pdfUploadForm" className="mb-4">
-            <label htmlFor="pdfFiles" className="form-label">
-              Selecciona uno o más archivos PDF:
-            </label>
-            <input
-              className="form-control"
-              type="file"
-              id="pdfFiles"
-              accept="application/pdf"
-              multiple
-              onChange={handleFileChange}
-            />
-          </form>
-
-          <div className="actions d-flex gap-2 mb-3">
-            <button className="btn btn-success" onClick={handleClear}>
-              Limpiar lista
-            </button>
-            <button className="btn btn-danger" onClick={handleReject}>
-              Eliminar no válidos
-            </button>
-            <button
-              className="btn btn-primary"
-              onClick={handleUpload}
-              disabled={files.length === 0}
-            >
-              Seguir / Cargar
-            </button>
+      <div className="container-fluid py-4" style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        {/* Section 1: Upload + Status Cards */}
+        <div className="row mb-4">
+          {/* Upload section */}
+          <div className="col-md-6">
+            <div className="card p-4 h-100">
+              <div className="d-flex align-items-center gap-3 mb-3">
+                <div style={{ fontSize: "2.5rem", color: "#17a2b8" }}>
+                  <i className="bi bi-cloud-arrow-up"></i>
+                </div>
+                <div>
+                  <h5 className="mb-0">Subir PDF</h5>
+                  <small className="text-muted">Procesamiento automático con IA</small>
+                </div>
+              </div>
+              <div style={{
+                border: "2px dashed #17a2b8",
+                borderRadius: "8px",
+                padding: "40px 20px",
+                textAlign: "center",
+                backgroundColor: "#f0f8ff",
+                cursor: "pointer"
+              }}>
+                <div style={{ fontSize: "2.5rem", color: "#17a2b8", marginBottom: "10px" }}>
+                  <i className="bi bi-cloud-arrow-down"></i>
+                </div>
+                <p className="mb-2">Arrastra PDF aquí</p>
+                <small className="text-muted">o haz clic para seleccionar múltiples PDF</small>
+                <div style={{ marginTop: "10px" }}>
+                  <small className="text-muted">Tamaño máximo: 5MB por archivo</small>
+                </div>
+              </div>
+              <button className="btn btn-primary mt-3 w-100">Subir Documento(s)</button>
+            </div>
           </div>
 
-          {/* Tabla de archivos */}
-          <table className="table table-bordered table-striped align-middle">
-            <thead>
-              <tr>
-                <th>Archivo</th>
-                <th>Tamaño</th>
-                <th>Revisión técnica</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {files.map((file, i) => (
-                <tr key={i}>
-                  <td>{file.name}</td>
-                  <td>{(file.size / 1024 / 1024).toFixed(2)} MB</td>
-                  <td>
-                    {file.size > 3 * 1024 * 1024 ? (
-                      <span className="badge bg-danger">Inválido</span>
-                    ) : (
-                      <span className="badge bg-success">Válido</span>
-                    )}
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-outline-danger btn-sm"
-                      onClick={() => setFiles(files.filter((_, j) => j !== i))}
-                    >
-                      <i className="bi bi-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {files.length === 0 && (
-                <tr>
-                  <td colSpan="4" className="text-center text-muted">
-                    No hay archivos cargados.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+          {/* Status cards */}
+          <div className="col-md-6">
+            <div className="row g-2">
+              {/* Procesados */}
+              <div className="col-12">
+                <div className="card p-3" style={{ borderLeft: "4px solid #17a2b8" }}>
+                  <div className="d-flex align-items-center">
+                    <div style={{ fontSize: "1.8rem", color: "#17a2b8", marginRight: "15px" }}>
+                      <i className="bi bi-file-check"></i>
+                    </div>
+                    <div>
+                      <small className="text-muted d-block">PROCESADOS</small>
+                      <h4 className="mb-0">0</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Enviados */}
+              <div className="col-12">
+                <div className="card p-3" style={{ borderLeft: "4px solid #6f42c1" }}>
+                  <div className="d-flex align-items-center">
+                    <div style={{ fontSize: "1.8rem", color: "#6f42c1", marginRight: "15px" }}>
+                      <i className="bi bi-send"></i>
+                    </div>
+                    <div>
+                      <small className="text-muted d-block">ENVIADOS</small>
+                      <h4 className="mb-0">0</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* No cumplidos */}
+              <div className="col-12">
+                <div className="card p-3" style={{ borderLeft: "4px solid #dc3545" }}>
+                  <div className="d-flex align-items-center">
+                    <div style={{ fontSize: "1.8rem", color: "#dc3545", marginRight: "15px" }}>
+                      <i className="bi bi-exclamation-circle"></i>
+                    </div>
+                    <div>
+                      <small className="text-muted d-block">NO CUMPLIDOS</small>
+                      <h4 className="mb-0">0</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Mis empresas */}
+              <div className="col-12">
+                <div className="card p-3" style={{ borderLeft: "4px solid #e83e8c" }}>
+                  <div className="d-flex align-items-center">
+                    <div style={{ fontSize: "1.8rem", color: "#e83e8c", marginRight: "15px" }}>
+                      <i className="bi bi-building"></i>
+                    </div>
+                    <div>
+                      <small className="text-muted d-block">MIS EMPRESAS</small>
+                      <h4 className="mb-0">0</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 2: Requirements box (kept intact) */}
+        <div className="card mb-4">
+          <div className="card-header" style={{ background: "#f8f9fa", borderBottom: "1px solid #dee2e6" }}>
+            <h6 className="mb-0">Requerimientos de Documentos</h6>
+          </div>
+          <div className="card-body">
+            <ul className="reqs mb-0">
+              <li>
+                <strong>Tipo de archivo:</strong> Solo PDF.
+              </li>
+              <li>
+                <strong>Formato:</strong> Escala de grises a 8 bits.
+              </li>
+              <li>
+                <strong>Resolución:</strong> 300 DPI.
+              </li>
+              <li>
+                <strong>Tamaño máximo:</strong> 3 MB por archivo.
+              </li>
+              <li>
+                <strong>Contenido:</strong> Sin formularios ni contraseñas.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Section 3: Finalized documents */}
+        <div className="card">
+          <div className="card-header" style={{ background: "linear-gradient(90deg, #17a2b8 0%, #20c997 100%)", color: "white" }}>
+            <div className="d-flex align-items-center gap-2">
+              <i className="bi bi-check2-circle" style={{ fontSize: "1.5rem" }}></i>
+              <div>
+                <h6 className="mb-0">Documentos Finalizados (0)</h6>
+                <small>Verificación de cumplimiento</small>
+              </div>
+            </div>
+          </div>
+          <div className="card-body text-center py-5">
+            <div style={{ fontSize: "3rem", color: "#ccc", marginBottom: "15px" }}>
+              <i className="bi bi-file-earmark"></i>
+            </div>
+            <p className="text-muted mb-1">No hay documentos</p>
+            <small className="text-muted">Aún no has subido ningún documento</small>
+          </div>
         </div>
       </div>
 
