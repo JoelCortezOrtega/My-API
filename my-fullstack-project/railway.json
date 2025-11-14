@@ -2,13 +2,13 @@
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
     "builder": "dockerfile",
-    "dockerfile": "backend/Dockerfile",
-    "context": "."
+    "dockerfile": "my-fullstack-project/backend/Dockerfile",
+    "context": "my-fullstack-project"
   },
   "deploy": {
     "restartPolicyType": "on_failure",
     "restartPolicyMaxRetries": 5,
-    "startCommand": "npm start",
+  "startCommand": "cd my-fullstack-project && ./start.sh",
     "numReplicas": 1
   }
 }
