@@ -1,0 +1,177 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 599B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 410B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-alpine
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/library/node:20-alpine
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 441B 0.2s done
+#6 DONE 0.2s
+
+#7 [6/7] COPY backend/src ./src
+#7 CACHED
+
+#8 [2/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] COPY backend/package*.json ./
+#9 CACHED
+
+#10 [3/7] RUN apk add --no-cache openssl
+#10 CACHED
+
+#11 [5/7] RUN npm install
+#11 CACHED
+
+#12 [7/7] COPY prisma ./prisma
+#12 CACHED
+
+#13 exporting to image
+#13 exporting layers done
+#13 writing image sha256:87484923ad440539998d9711e7a92dcbb52fc84b5537ea08a73d83f415231366 done
+#13 naming to docker.io/library/my-fullstack-project-backend done
+#13 DONE 0.0s
+
+#14 resolving provenance for metadata file
+#14 DONE 0.0s
+ my-fullstack-project-backend  Built
+ Network my-fullstack-project_default  Creating
+ Network my-fullstack-project_default  Created
+ Volume my-fullstack-project_postgres_data  Creating
+ Volume my-fullstack-project_postgres_data  Created
+ Container postgres_db  Creating
+ Container frontend_app  Creating
+ Container postgres_db  Created
+ Container backend_app  Creating
+ Container frontend_app  Created
+ Container backend_app  Created
+Attaching to backend_app, frontend_app, postgres_db
+postgres_db  | The files belonging to this database system will be owned by user "postgres".
+postgres_db  | This user must also own the server process.
+postgres_db  | 
+postgres_db  | The database cluster will be initialized with locale "en_US.utf8".
+postgres_db  | The default database encoding has accordingly been set to "UTF8".
+postgres_db  | The default text search configuration will be set to "english".
+postgres_db  | 
+postgres_db  | Data page checksums are disabled.
+postgres_db  | 
+postgres_db  | fixing permissions on existing directory /var/lib/postgresql/data ... ok
+postgres_db  | creating subdirectories ... ok
+postgres_db  | selecting dynamic shared memory implementation ... posix
+postgres_db  | selecting default max_connections ... 100
+postgres_db  | selecting default shared_buffers ... 128MB
+postgres_db  | selecting default time zone ... UTC
+postgres_db  | creating configuration files ... ok
+postgres_db  | running bootstrap script ... ok
+postgres_db  | sh: locale: not found
+postgres_db  | 2025-11-14 00:12:52.061 UTC [34] WARNING:  no usable system locales were found
+postgres_db  | performing post-bootstrap initialization ... ok
+postgres_db  | initdb: warning: enabling "trust" authentication for local connections
+postgres_db  | initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+postgres_db  | syncing data to disk ... ok
+postgres_db  | 
+postgres_db  | 
+postgres_db  | Success. You can now start the database server using:
+postgres_db  | 
+postgres_db  |     pg_ctl -D /var/lib/postgresql/data -l logfile start
+postgres_db  | 
+postgres_db  | waiting for server to start....2025-11-14 00:12:52.809 UTC [40] LOG:  starting PostgreSQL 16.10 on x86_64-pc-linux-musl, compiled by gcc (Alpine 14.2.0) 14.2.0, 64-bit
+postgres_db  | 2025-11-14 00:12:52.812 UTC [40] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+postgres_db  | 2025-11-14 00:12:52.821 UTC [43] LOG:  database system was shut down at 2025-11-14 00:12:52 UTC
+postgres_db  | 2025-11-14 00:12:52.834 UTC [40] LOG:  database system is ready to accept connections
+postgres_db  |  done
+postgres_db  | server started
+postgres_db  | CREATE DATABASE
+postgres_db  | 
+postgres_db  | 
+postgres_db  | /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+postgres_db  | 
+postgres_db  | waiting for server to shut down...2025-11-14 00:12:52.972 UTC [40] LOG:  received fast shutdown request
+postgres_db  | .2025-11-14 00:12:52.974 UTC [40] LOG:  aborting any active transactions
+postgres_db  | 2025-11-14 00:12:52.977 UTC [40] LOG:  background worker "logical replication launcher" (PID 46) exited with exit code 1
+postgres_db  | 2025-11-14 00:12:52.977 UTC [41] LOG:  shutting down
+postgres_db  | 2025-11-14 00:12:52.979 UTC [41] LOG:  checkpoint starting: shutdown immediate
+postgres_db  | 2025-11-14 00:12:53.022 UTC [41] LOG:  checkpoint complete: wrote 926 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.022 s, sync=0.012 s, total=0.045 s; sync files=301, longest=0.002 s, average=0.001 s; distance=4272 kB, estimate=4272 kB; lsn=0/191E928, redo lsn=0/191E928
+postgres_db  | 2025-11-14 00:12:53.029 UTC [40] LOG:  database system is shut down
+postgres_db  |  done
+postgres_db  | server stopped
+postgres_db  | 
+postgres_db  | PostgreSQL init process complete; ready for start up.
+postgres_db  | 
+postgres_db  | 2025-11-14 00:12:53.121 UTC [1] LOG:  starting PostgreSQL 16.10 on x86_64-pc-linux-musl, compiled by gcc (Alpine 14.2.0) 14.2.0, 64-bit
+postgres_db  | 2025-11-14 00:12:53.122 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+postgres_db  | 2025-11-14 00:12:53.122 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+postgres_db  | 2025-11-14 00:12:53.130 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+postgres_db  | 2025-11-14 00:12:53.140 UTC [56] LOG:  database system was shut down at 2025-11-14 00:12:53 UTC
+postgres_db  | 2025-11-14 00:12:53.150 UTC [1] LOG:  database system is ready to accept connections
+frontend_app  | 
+frontend_app  | up to date, audited 167 packages in 2s
+frontend_app  | 
+frontend_app  | 40 packages are looking for funding
+frontend_app  |   run `npm fund` for details
+frontend_app  | 
+frontend_app  | found 0 vulnerabilities
+frontend_app  | npm notice
+frontend_app  | npm notice New major version of npm available! 10.8.2 -> 11.6.2
+frontend_app  | npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.6.2
+frontend_app  | npm notice To update run: npm install -g npm@11.6.2
+frontend_app  | npm notice
+frontend_app  | 
+frontend_app  | > frontend@0.0.0 dev
+frontend_app  | > vite --host
+frontend_app  | 
+frontend_app  | 
+frontend_app  |   ROLLDOWN-VITE v7.2.2  ready in 296 ms
+frontend_app  | 
+frontend_app  |   ➜  Local:   http://localhost:5173/
+frontend_app  |   ➜  Network: http://172.18.0.2:5173/
+backend_app   | Prisma schema loaded from prisma/schema.prisma
+backend_app   | Datasource "db": PostgreSQL database "mydatabase", schema "public" at "postgres:5432"
+postgres_db   | 2025-11-14 00:13:03.428 UTC [67] LOG:  could not receive data from client: Connection reset by peer
+backend_app   | 
+backend_app   | 1 migration found in prisma/migrations
+backend_app   | 
+backend_app   | Applying migration `0_init`
+backend_app   | 
+backend_app   | The following migration(s) have been applied:
+backend_app   | 
+backend_app   | migrations/
+backend_app   |   └─ 0_init/
+backend_app   |     └─ migration.sql
+backend_app   |       
+backend_app   | All migrations have been successfully applied.
+backend_app   | /app/node_modules/.prisma/client/default.js:43
+backend_app   |     throw new Error('@prisma/client did not initialize yet. Please run "prisma generate" and try to import it again.');
+backend_app   |           ^
+backend_app   | 
+backend_app   | Error: @prisma/client did not initialize yet. Please run "prisma generate" and try to import it again.
+backend_app   |     at new PrismaClient (/app/node_modules/.prisma/client/default.js:43:11)
+backend_app   |     at file:///app/src/index.js:9:16
+backend_app   |     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+backend_app   |     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+backend_app   |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+backend_app   | 
+backend_app   | Node.js v20.19.5
+[Kbackend_app exited with code 1
+postgres_db   | 2025-11-14 00:13:51.603 UTC [1] LOG:  received fast shutdown request
+postgres_db   | 2025-11-14 00:13:51.605 UTC [1] LOG:  aborting any active transactions
+postgres_db   | 2025-11-14 00:13:51.605 UTC [91] FATAL:  terminating connection due to administrator command
+postgres_db   | 2025-11-14 00:13:51.613 UTC [1] LOG:  background worker "logical replication launcher" (PID 59) exited with exit code 1
+postgres_db   | 2025-11-14 00:13:51.616 UTC [54] LOG:  shutting down
+postgres_db   | 2025-11-14 00:13:51.619 UTC [54] LOG:  checkpoint starting: shutdown immediate
+postgres_db   | 2025-11-14 00:13:51.641 UTC [54] LOG:  checkpoint complete: wrote 105 buffers (0.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.006 s, sync=0.005 s, total=0.026 s; sync files=59, longest=0.001 s, average=0.001 s; distance=456 kB, estimate=456 kB; lsn=0/1990C00, redo lsn=0/1990C00
+postgres_db   | 2025-11-14 00:13:51.647 UTC [1] LOG:  database system is shut down
+[Kfrontend_app exited with code 143
+[Kpostgres_db exited with code 0

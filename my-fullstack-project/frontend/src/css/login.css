@@ -635,6 +635,13 @@ body {
   margin: 0 auto;
 }
 
+/* Evitar scrollbar interno en la tarjeta de registro: dejar que la página haga el scroll
+   en lugar de que el propio card tenga overflow. Esto quita la "barra lateral" interna */
+.login-card--register {
+  max-height: none;
+  overflow: visible;
+}
+
 .login-card--register .login-tabs {
   justify-content: center;
   gap: 12px;

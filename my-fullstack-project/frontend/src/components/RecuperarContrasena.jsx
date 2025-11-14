@@ -9,10 +9,12 @@ const RecuperarContrasena = () => {
   const [email, setEmail] = useState("");
   const [alertMsg, setAlertMsg] = useState(null);
   const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-  const handleStep1 = (e) => {
+  const handleStep1 = async (e) => {
     e.preventDefault();
     setAlertMsg(null);
 
@@ -24,14 +26,28 @@ const RecuperarContrasena = () => {
       return;
     }
 
-    setAlertMsg({
-      type: "info",
-      text: "RFC verificado. Ingresa tu email para continuar.",
-    });
-    setStep(2);
+    setLoading(true);
+
+    try {
+      // Verificar RFC en la base de datos
+      // Esta es una llamada de ejemplo - necesitarías implementar este endpoint
+      setAlertMsg({
+        type: "info",
+        text: "RFC verificado. Ingresa tu email para continuar.",
+      });
+      setStep(2);
+    } catch (error) {
+      console.error("Error:", error);
+      setAlertMsg({
+        type: "danger",
+        text: "Error al verificar RFC. Intenta nuevamente.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleStep2 = (e) => {
+  const handleStep2 = async (e) => {
     e.preventDefault();
     setAlertMsg(null);
 
@@ -43,14 +59,27 @@ const RecuperarContrasena = () => {
       return;
     }
 
-    setAlertMsg({
-      type: "success",
-      text: "Se ha enviado un enlace de recuperación a tu email. Por favor, revisa tu bandeja de entrada.",
-    });
+    setLoading(true);
 
-    setTimeout(() => {
-      navigate("/");
-    }, 3000);
+    try {
+      // Aquí iría la llamada a un endpoint de reset de contraseña
+      // Por ahora solo mostramos un mensaje
+      setAlertMsg({
+        type: "success",
+        text: "Se ha enviado un enlace de recuperación a tu email. Por favor, revisa tu bandeja de entrada.",
+      });
+
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    } catch (error) {
+      console.error("Error:", error);
+      setAlertMsg({
+        type: "danger",
+        text: "Error al enviar enlace de recuperación. Intenta nuevamente.",
+      });
+      setLoading(false);
+    }
   };
 
   return (
@@ -84,6 +113,7 @@ const RecuperarContrasena = () => {
                   value={rfc}
                   onChange={(e) => setRfc(e.target.value)}
                   autoComplete="off"
+                  disabled={loading}
                 />
               </div>
 
@@ -96,14 +126,24 @@ const RecuperarContrasena = () => {
                 </div>
               )}
 
-              <button type="submit" className="btn btn-create w-100">
-                <i className="bi bi-arrow-right"></i> Continuar
+              <button type="submit" className="btn btn-create w-100" disabled={loading}>
+                {loading ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Verificando...
+                  </>
+                ) : (
+                  <>
+                    <i className="bi bi-arrow-right"></i> Continuar
+                  </>
+                )}
               </button>
 
               <button
                 type="button"
                 className="forgot-pwd-link"
                 onClick={() => navigate("/")}
+                disabled={loading}
               >
                 ← Volver a Inicio de Sesión
               </button>
@@ -124,6 +164,7 @@ const RecuperarContrasena = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
+                  disabled={loading}
                 />
               </div>
 
@@ -136,8 +177,17 @@ const RecuperarContrasena = () => {
                 </div>
               )}
 
-              <button type="submit" className="btn btn-create w-100">
-                <i className="bi bi-envelope-check"></i> Enviar Enlace
+              <button type="submit" className="btn btn-create w-100" disabled={loading}>
+                {loading ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Enviando...
+                  </>
+                ) : (
+                  <>
+                    <i className="bi bi-envelope-check"></i> Enviar Enlace
+                  </>
+                )}
               </button>
 
               <button
@@ -149,6 +199,7 @@ const RecuperarContrasena = () => {
                   setEmail("");
                   setAlertMsg(null);
                 }}
+                disabled={loading}
               >
                 ← Volver al paso anterior
               </button>

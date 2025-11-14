@@ -1,10 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "../css/pag_verificacion.css";
 import "../css/login.css";
 
 const Verificacion = () => {
+  const navigate = useNavigate()
+  const [checking, setChecking] = useState(true)
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000"
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      // No token -> redirect to login
+      navigate('/', { replace: true })
+      return
+    }
+
+    // Validate token with backend /auth/me
+    ;(async () => {
+      try {
+        const res = await fetch(`${API_URL}/auth/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        if (!res.ok) {
+          // Invalid token
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/', { replace: true })
+          return
+        }
+        // OK
+      } catch (err) {
+        // network error -> treat as not authorized
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        navigate('/', { replace: true })
+        return
+      } finally {
+        setChecking(false)
+      }
+    })()
+  }, [navigate])
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    navigate('/', { replace: true })
+  }
+
+  if (checking) return null
   return (
     <div>
       {/* Header blanco */}
@@ -24,7 +70,7 @@ const Verificacion = () => {
               <h1 className="brand-title mb-0" style={{ color: "#0b2d50" }}>Centro de Cumplimiento Fiscal</h1>
             </div>
             <div className="col text-end" style={{ marginRight: "15px" }}>
-              <button className="btn btn-Cerrar">Cerrar Sesión</button>
+              <button className="btn btn-Cerrar" onClick={handleLogout}>Cerrar Sesión</button>
             </div>
           </div>
         </div>

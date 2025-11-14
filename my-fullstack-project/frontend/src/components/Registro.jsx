@@ -7,18 +7,18 @@ import "../css/login.css";
 const Registro = () => {
   const [formData, setFormData] = useState({
     rfc: "",
-
+    nombre: "",
     email: "",
-    telefono: "",
-    empresa: "",
     pwd: "",
     confirmPwd: "",
   });
   const [alertMsg, setAlertMsg] = useState(null);
   const [showPwd, setShowPwd] = useState(false);
   const [showConfirmPwd, setShowConfirmPwd] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,7 +28,7 @@ const Registro = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setAlertMsg(null);
 
@@ -72,14 +72,54 @@ const Registro = () => {
       return;
     }
 
-    setAlertMsg({
-      type: "success",
-      text: "¡Registro completado exitosamente! Redirigiendo...",
-    });
+    setLoading(true);
 
-    setTimeout(() => {
-      navigate("/");
-    }, 2000);
+    try {
+      const response = await fetch(`${API_URL}/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          rfc: formData.rfc,
+          nombre: formData.nombre,
+          password: formData.pwd,
+          passwordConfirm: formData.confirmPwd,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setAlertMsg({
+          type: "danger",
+          text: data.error || "Error al registrar usuario",
+        });
+        setLoading(false);
+        return;
+      }
+
+      // Guardar token en localStorage
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      setAlertMsg({
+        type: "success",
+        text: "¡Registro completado exitosamente! Redirigiendo...",
+      });
+
+      setTimeout(() => {
+        navigate("/verificacion");
+      }, 2000);
+    } catch (error) {
+      console.error("Error:", error);
+      setAlertMsg({
+        type: "danger",
+        text: "Error de conexión. Intenta nuevamente.",
+      });
+      setLoading(false);
+    }
   };
 
   return (
@@ -109,6 +149,7 @@ const Registro = () => {
                 value={formData.email}
                 onChange={handleChange}
                 autoComplete="email"
+                disabled={loading}
               />
             </div>
             <div className="col-6">
@@ -121,8 +162,23 @@ const Registro = () => {
                 value={formData.rfc}
                 onChange={handleChange}
                 autoComplete="off"
+                disabled={loading}
               />
             </div>
+          </div>
+
+          <div className="mt-3">
+            <label className="form-label">Nombre Completo</label>
+            <input
+              type="text"
+              name="nombre"
+              className="form-control"
+              placeholder="Tu nombre completo"
+              value={formData.nombre}
+              onChange={handleChange}
+              autoComplete="name"
+              disabled={loading}
+            />
           </div>
 
           <div className="row gx-2 mt-3">
@@ -137,12 +193,14 @@ const Registro = () => {
                   value={formData.pwd}
                   onChange={handleChange}
                   autoComplete="new-password"
+                  disabled={loading}
                 />
                 <button
                   type="button"
                   className="toggle-pwd"
                   onClick={() => setShowPwd(!showPwd)}
                   tabIndex="-1"
+                  disabled={loading}
                 >
                   <i className={`bi ${showPwd ? "bi-eye-slash" : "bi-eye"}`}></i>
                 </button>
@@ -159,12 +217,14 @@ const Registro = () => {
                   value={formData.confirmPwd}
                   onChange={handleChange}
                   autoComplete="new-password"
+                  disabled={loading}
                 />
                 <button
                   type="button"
                   className="toggle-pwd"
                   onClick={() => setShowConfirmPwd(!showConfirmPwd)}
                   tabIndex="-1"
+                  disabled={loading}
                 >
                   <i className={`bi ${showConfirmPwd ? "bi-eye-slash" : "bi-eye"}`}></i>
                 </button>
@@ -179,13 +239,22 @@ const Registro = () => {
           )}
 
           <div className="mt-4">
-            <button type="submit" className="btn btn-create w-100">
-              <i className="bi bi-sparkles"></i> Crear Cuenta
+            <button type="submit" className="btn btn-create w-100" disabled={loading}>
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Registrando...
+                </>
+              ) : (
+                <>
+                  <i className="bi bi-sparkles"></i> Crear Cuenta
+                </>
+              )}
             </button>
           </div>
 
           <div className="mt-3">
-            <button type="button" className="btn btn-outline-pink w-100">Registrar Empresa</button>
+            <button type="button" className="btn btn-outline-pink w-100" disabled={loading}>Registrar Empresa</button>
           </div>
 
         </form>
