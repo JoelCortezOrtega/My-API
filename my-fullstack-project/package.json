@@ -1,5 +1,24 @@
 {
+  "name": "my-fullstack-web",
+  "version": "1.0.0",
+  "description": "Full-stack application with React, Node.js, Express, and PostgreSQL",
+  "private": true,
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev": "cd backend && npm run dev",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+  },
+  "keywords": [
+    "fullstack",
+    "react",
+    "express",
+    "postgresql",
+    "prisma"
+  ],
+  "author": "Javier Nieto",
+  "license": "MIT",
   "devDependencies": {
     "prisma": "^5.13.0"
   }
 }
+
