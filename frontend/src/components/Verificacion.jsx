@@ -4,11 +4,91 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "../css/pag_verificacion.css";
 import "../css/login.css";
+import axios from 'axios';
+import Swal from 'sweetalert2'; // Importar SweetAlert2
 
 const Verificacion = () => {
   const navigate = useNavigate()
   const [checking, setChecking] = useState(true)
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000"
+
+  const [file, setFile] = useState(null);
+  const FRT_URL = "http://localhost:5000";
+
+
+  //Selección del archivos
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+  
+  
+  // Función para manejar la conversión del PDF
+  const handleConvert = async () => {
+    if (!file) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'No has seleccionado un archivo',
+        text: 'Por favor, selecciona un archivo PDF para convertir.',
+      });
+      return;
+    }
+
+    // Mostrar el loading usando SweetAlert
+    const swalLoading = Swal.fire({
+      title: 'Convirtiendo...',
+      text: 'Por favor espera mientras se procesa el archivo.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(); // Mostrar el icono de carga
+      },
+      showConfirmButton: false, // No mostrar el botón de confirmación
+    });
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      // Enviar el archivo al backend (API Flask)
+      const response = await axios.post(`${API_URL}/convertir_pdf`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        responseType: 'blob', // Recibir el archivo PDF convertido como un Blob
+      });
+
+      // Crear una URL para mostrar el PDF convertido
+      const convertedPdfBlob = response.data;
+      const url = URL.createObjectURL(convertedPdfBlob);
+
+      // Cerrar la alerta de loading y mostrar una de éxito con el enlace para descargar
+      swalLoading.close();
+
+      Swal.fire({
+        icon: 'success',
+        title: '¡Conversión exitosa!',
+        text: 'El archivo PDF ha sido convertido exitosamente.',
+        showConfirmButton: true,
+        confirmButtonText: 'Descargar PDF',
+        preConfirm: () => {
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'pdf_convertido.pdf';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        },
+      });
+    } catch (err) {
+      // Si ocurre un error, cerrar la alerta de loading y mostrar la alerta de error
+      swalLoading.close();
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ocurrió un error al convertir el archivo. Intenta nuevamente.',
+      });
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -92,24 +172,8 @@ const Verificacion = () => {
                   <small className="text-muted">Procesamiento automático con IA</small>
                 </div>
               </div>
-              <div style={{
-                border: "2px dashed #17a2b8",
-                borderRadius: "8px",
-                padding: "40px 20px",
-                textAlign: "center",
-                backgroundColor: "#f0f8ff",
-                cursor: "pointer"
-              }}>
-                <div style={{ fontSize: "2.5rem", color: "#17a2b8", marginBottom: "10px" }}>
-                  <i className="bi bi-cloud-arrow-down"></i>
-                </div>
-                <p className="mb-2">Arrastra PDF aquí</p>
-                <small className="text-muted">o haz clic para seleccionar múltiples PDF</small>
-                <div style={{ marginTop: "10px" }}>
-                  <small className="text-muted">Tamaño máximo: 5MB por archivo</small>
-                </div>
-              </div>
-              <button className="btn btn-primary mt-3 w-100">Subir Documento(s)</button>
+              <input type="file" accept="application/pdf" onChange={handleFileChange} />
+              <button onClick={handleConvert} className="btn btn-primary mt-3 w-100">Subir Documento(s)</button>
             </div>
           </div>
 
