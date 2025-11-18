@@ -1,4 +1,6 @@
 services:
+  # CODIGO DE JOEL EMPIEZA
+  
   pdf-converter-api:
     build:
       context: ./backend/python-service
@@ -14,6 +16,8 @@ services:
     volumes:
       - ./backend/python-service:/app
     command: python app.py
+
+  # CODIGO DE JOEL TERMINA
 
 
   postgres:
